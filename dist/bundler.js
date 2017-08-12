@@ -159,11 +159,13 @@ function _bundle(buildExpression, cfg) {
   var builder = createBuilder(cfg);
 
   return builder.bundle(buildExpression, cfg.options).then(function (output) {
-    var outfile = utils.getOutFileName(output.source, cfg.bundleName + '.js', cfg.options.rev);
+    var outfile = utils.getOutFileName(output.source, cfg.bundleName + '.js'),
+        bundleFile = outfile + (cfg.options.rev ? '?v=' + cfg.options.rev : '');
+
     writeOutput(output, outfile, cfg.baseURL, cfg.force);
 
     if (cfg.options.inject) {
-      injectBundle(builder, output, outfile, cfg);
+      injectBundle(builder, output, bundleFile, cfg);
     }
 
     return _bluebird2.default.resolve();
